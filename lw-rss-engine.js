@@ -1,11 +1,12 @@
 (async function() {
     const config = document.currentScript.dataset;
     const RSS_URL = "https://mrmarcel.learnworlds.com/rss.xml";
-    const PROXY_URL = "https://api.allorigins.win/get?url=" + encodeURIComponent(RSS_URL);
-
+    
+    // Detectamos si estamos en el mismo dominio para evitar el proxy
+    const isSameOrigin = window.location.hostname === "mrmarcel.learnworlds.com";
+    
     /**
      * REPOSITORIO DE PLANTILLAS
-     * Cada función recibe un objeto 'data' y devuelve un string HTML.
      */
     const templates = {
         'card-mini': (data) => `
@@ -20,13 +21,11 @@
                 </div>
             </a>
         `,
-        // Aquí añadiremos 'card-full', 'list-item', etc.
-        'debug': (data) => `<pre>${JSON.stringify(data, null, 2)}</pre>`
+        'debug': (data) => `<pre style="font-size:10px; color:white; background:black; padding:10px; overflow:auto;">${JSON.stringify(data, null, 2)}</pre>`
     };
 
     /**
      * INYECCIÓN DE ESTILOS
-     * Mantenemos los estilos base y específicos de cada plantilla.
      */
     const injectStyles = () => {
         const styleId = 'lw-events-styles';
@@ -45,7 +44,6 @@
                 font-family: inherit;
             }
             
-            /* Estilos Plantilla: card-mini */
             .card-mini {
                 width: 300px;
                 height: 200px;
@@ -93,7 +91,6 @@
             .card-mini .lw-month-year { font-size: 16px; line-height: 1.1; text-transform: capitalize; }
             .card-mini .lw-title { margin: 0; font-size: 16px; font-weight: 500; line-height: 1.3; }
 
-            /* Hovers para card-mini */
             .card-mini:hover .lw-header { background: var(--lw-dark); color: white; }
             .card-mini:hover .lw-body { background: var(--lw-accent); color: var(--lw-dark); }
         `;
@@ -107,12 +104,29 @@
      * PROCESADOR DE DATOS
      */
     try {
+        console.log("> RSS Engine: Iniciando carga...");
         injectStyles();
-        const response = await fetch(PROXY_URL);
-        const json = await response.json();
+
+        let xmlText = "";
+
+        if (isSameOrigin) {
+            // Si estamos en el mismo dominio, pedimos el XML directamente
+            console.log("> RSS Engine: Same-origin detectado, cargando directamente.");
+            const response = await fetch("/rss.xml");
+            xmlText = await response.text();
+        } else {
+            // Si no (ej. previsualización o desarrollo local), usamos un proxy más robusto para Chrome
+            console.log("> RSS Engine: Cross-origin detectado, usando proxy.");
+            const PROXY_URL = "https://corsproxy.io/?" + encodeURIComponent(RSS_URL);
+            const response = await fetch(PROXY_URL);
+            xmlText = await response.text();
+        }
+
         const parser = new DOMParser();
-        const xml = parser.parseFromString(json.contents, "text/xml");
+        const xml = parser.parseFromString(xmlText, "text/xml");
         const items = Array.from(xml.querySelectorAll("item"));
+
+        if (items.length === 0) throw new Error("No se encontraron items en el RSS");
 
         const filtered = items.filter(item => {
             const categories = Array.from(item.querySelectorAll("category")).map(c => c.textContent.toLowerCase());
@@ -124,6 +138,8 @@
             return matchCategory;
         });
 
+        console.log(`> RSS Engine: ${filtered.length} eventos encontrados para mostrar.`);
+
         const container = document.querySelector(config.container);
         if (!container) return;
         container.classList.add('lw-event-wrapper');
@@ -132,7 +148,6 @@
         filtered.slice(0, parseInt(config.limit) || 3).forEach(item => {
             const dateObj = new Date(item.querySelector("pubDate").textContent);
             
-            // Objeto de datos normalizado para las plantillas
             const itemData = {
                 title: item.querySelector("title").textContent,
                 link: item.querySelector("link").textContent,
@@ -144,12 +159,13 @@
                 image: (item.querySelector("description").textContent.match(/src="([^"]+)"/) || [])[1] || ""
             };
 
-            // Ejecutar la plantilla seleccionada
             const templateFn = templates[config.template] || templates['card-mini'];
             container.innerHTML += templateFn(itemData);
         });
 
     } catch (error) {
         console.error("> RSS Engine Error:", error);
+        const container = document.querySelector(config.container);
+        if (container) container.innerHTML = "<!-- Error cargando eventos RSS -->";
     }
 })();
