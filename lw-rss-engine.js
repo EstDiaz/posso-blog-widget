@@ -150,6 +150,7 @@
         if (items.length === 0) throw new Error("No se encontraron items en el RSS");
 
         const filtered = items.filter(item => {
+            const itemLink = item.querySelector("link").textContent;
             const categories = Array.from(item.querySelectorAll("category")).map(c => c.textContent.toLowerCase());
             const pubDate = new Date(item.querySelector("pubDate").textContent);
             const matchCategory = categories.includes(config.category.toLowerCase());
@@ -157,6 +158,7 @@
             // Lógica de exclusión por slug (data-remove) con limpieza de espacios
             const itemSlug = itemLink.split('/').filter(Boolean).pop();
             const slugToRemove = config.remove ? config.remove.trim() : null;
+            
             console.log(("> RSS Engine: Evaluando item con slug '" + itemSlug + "'" + (slugToRemove ? " contra slug a remover '" + slugToRemove + "'" : "")));
             
             if (slugToRemove && itemSlug === slugToRemove) {
