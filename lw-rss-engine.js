@@ -13,16 +13,18 @@
      */
     const templates = {
         'card-mini': (data) => `
-            <a href="${data.link}" class="lw-card card-mini">
-                <div class="lw-badge learnworlds-overline-text">Actividad</div>
-                <div class="lw-header">
-                    <span class="lw-day learnworlds-main-text learnworlds-main-text-huge">${data.day}</span>
-                    <span class="lw-month-year learnworlds-main-text learnworlds-main-text-large">${data.month} ${data.year}</span>
-                </div>
-                <div class="lw-body">
-                    <h3 class="learnworlds-heading3 learnworlds-heading3-small">${data.title}</h3>
-                </div>
-            </a>
+            <div class="col span_4_of_12 lw-card-mb span_4_of_12-tl span_6_of_12-tp span_6_of_12-sl span_12_of_12-sp no-padding flex-item">
+                <a href="${data.link}" class="lw-card card-mini">
+                    <div class="lw-badge learnworlds-overline-text">Actividad</div>
+                    <div class="lw-header">
+                        <span class="lw-day learnworlds-main-text learnworlds-main-text-huge">${data.day}</span>
+                        <span class="lw-month-year learnworlds-main-text learnworlds-main-text-large">${data.month} ${data.year}</span>
+                    </div>
+                    <div class="lw-body">
+                        <h3 class="learnworlds-heading3 learnworlds-heading3-small">${data.title}</h3>
+                    </div>
+                </a>
+            </div>
         `,
         'debug': (data) => `<pre style="font-size:10px; color:white; background:black; padding:10px; overflow:auto;">${JSON.stringify(data, null, 2)}</pre>`
     };
@@ -41,18 +43,16 @@
                 --radius: 16px;
                 --radius-int: 14px;
             }
-            .lw-event-wrapper {
-                display: flex;
-                gap: 20px;
-                flex-wrap: wrap;
-                font-family: inherit;
+            
+            /* El contenedor usa el grid de LearnWorlds, solo añadimos gap si es necesario */
+            .lw-event-wrapper.lw-cols {
+                margin-top: 20px;
             }
             
             .card-mini {
-                width: 33%;
-                height: auto;
+                width: 100%; /* El ancho lo controla el div .col superior */
+                height: 100%;
                 border-radius: var(--radius);
-                overflow: show;
                 display: flex;
                 flex-direction: column;
                 position: relative;
@@ -61,6 +61,7 @@
                 border: 2px solid var(--black);
                 text-decoration: none !important;
                 color: inherit;
+                background: var(--soft-beige);
             }
             .card-mini .lw-badge {
                 position: absolute;
@@ -74,19 +75,18 @@
             }
             .card-mini .lw-header {
                 color: var(--black);
-                flex: 1;
                 display: flex;
                 align-items: baseline;
                 transition: 0.3s;
-                padding: 24px 24px 8px;
+                padding: 32px 24px 16px;
                 border-radius: var(--radius-int) var(--radius-int) 0 0;
+                min-height: 100px;
             }
             .card-mini .lw-body {
                 flex-grow: 1;
                 background: var(--black);
                 color: var(--soft-beige);
                 padding: 24px;
-                min-height: 85px;
                 display: flex;
                 align-items: start;
                 transition: 0.3s;
@@ -95,17 +95,26 @@
             }
             .card-mini .lw-day { 
 				text-decoration: none !important;
-                margin: 0 16px 0 0
+                margin: 0 16px 0 0;
+                line-height: 1;
 			}
             .card-mini .lw-month-year {
 				text-decoration: none !important;
+                line-height: 1.2;
             }
             .card-mini .lw-title { 
                 font-weight: bold;
+                margin: 0;
 			}
 
             .card-mini:hover .lw-header { background: var(--black); color: var(--soft-beige); }
             .card-mini:hover .lw-body { background: transparent; color: var(--black); }
+
+            /* Ajuste para que las columnas tengan padding interno coherente con el grid */
+            .lw-event-wrapper .col {
+                padding: 10px !important;
+                display: flex;
+            }
         `;
         const style = document.createElement('style');
         style.id = styleId;
@@ -123,12 +132,10 @@
         let xmlText = "";
 
         if (isSameOrigin) {
-            // Si estamos en el mismo dominio, pedimos el XML directamente
             console.log("> RSS Engine: Same-origin detectado, cargando directamente.");
             const response = await fetch("/rss.xml");
             xmlText = await response.text();
         } else {
-            // Si no (ej. previsualización o desarrollo local), usamos un proxy más robusto para Chrome
             console.log("> RSS Engine: Cross-origin detectado, usando proxy.");
             const PROXY_URL = "https://corsproxy.io/?" + encodeURIComponent(RSS_URL);
             const response = await fetch(PROXY_URL);
@@ -151,11 +158,11 @@
             return matchCategory;
         });
 
-        console.log(`> RSS Engine: ${filtered.length} eventos encontrados para mostrar.`);
-
         const container = document.querySelector(config.container);
         if (!container) return;
-        container.classList.add('lw-event-wrapper');
+        
+        // Aplicamos las clases nativas de grid de LearnWorlds al contenedor
+        container.className = "lw-event-wrapper lw-cols multiple-rows multiple-rows-tl multiple-rows-tp multiple-rows-sl multiple-rows-sp align-items-stretch j-c-c";
         container.innerHTML = "";
 
         filtered.slice(0, parseInt(config.limit) || 3).forEach(item => {
