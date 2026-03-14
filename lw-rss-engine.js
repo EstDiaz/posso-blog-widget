@@ -30,13 +30,14 @@
                 <a href="${data.link}" class="lw-card card-list">
                     <div class="row-section row-title-box">
                         <span class="lw-badge learnworlds-overline-text">Así fue</span>
-                        <h3 class="learnworlds-heading3 lw-title">${data.title}</h3>
+                        <h3 class="learnworlds-heading3 learnworlds-element learnworlds-heading3-normal lw-title lw-title">${data.title}</h3>
                     </div>
                     <div class="row-section row-info-box">
-                        <p class="learnworlds-main-text learnworlds-main-text-small lw-description">${data.description}</p>
-                        <div class="lw-date learnworlds-main-text learnworlds-main-text-normal">
+                        <div class="lw-date learnworlds-main-text learnworlds-main-text-large mb-20">
                             <strong>${data.day}</strong> ${data.month} ${data.year}
                         </div>
+                        <p class="learnworlds-main-text learnworlds-main-text-normal lw-description">${data.description}</p>
+                        
                     </div>
                     <div class="row-section row-image-box" style="background-image: url('${data.image || 'https://via.placeholder.com/400x300'}')">
                         <div class="js-learnworlds-overlay"></div>
@@ -117,20 +118,23 @@
             .card-list {
                 width: 100%;
                 min-height: 220px;
-                border: none;
+                border: 2px solid var(--black);
+                border-radius: var(--radius);
                 flex-direction: row;
             }
             .card-list .row-section {
                 flex: 1;
-                padding: 30px;
+                padding: 24px;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
+                justify-content: start;
+				text-align: left;
             }
             .card-list .row-title-box {
                 background-color: var(--blog-blue);
                 flex: 0 0 35%;
                 position: relative;
+                text-decoration: none !important;
             }
             .card-list .row-info-box {
                 background-color: var(--blog-blue-bg);
@@ -152,14 +156,14 @@
                 pointer-events: none;
             }
             .card-list .lw-badge {
-                margin-bottom: 15px;
-                font-weight: bold;
-                opacity: 0.8;
+                margin-bottom: 32px;
+                font-weight: normal;
+                text-decoration: none !important;
             }
             .card-list .lw-title {
                 margin: 0;
                 line-height: 1.2;
-                font-weight: bold;
+                font-weight: normal;
             }
             .card-list .lw-description {
                 margin-bottom: 20px;
@@ -169,7 +173,7 @@
                 overflow: hidden;
             }
             .card-list .lw-date {
-                font-size: 1.2rem;
+                xfont-size: 1.2rem;
             }
             .card-list:hover {
                 transform: translateY(-2px);
