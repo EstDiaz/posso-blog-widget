@@ -1,6 +1,9 @@
 (async function() {
     const config = document.currentScript.dataset;
     const RSS_URL = "https://mrmarcel.learnworlds.com/rss.xml";
+
+    console.log("> RSS Engine Running");
+    console.log("> Configuración detectada:", config);
     
     // Detectamos si estamos en el mismo dominio para evitar el proxy
     const isSameOrigin = window.location.hostname === "mrmarcel.learnworlds.com";
@@ -11,13 +14,13 @@
     const templates = {
         'card-mini': (data) => `
             <a href="${data.link}" class="lw-card card-mini">
-                <div class="lw-badge">Evento</div>
+                <div class="lw-badge learnworlds-overline-text">Actividad</div>
                 <div class="lw-header">
-                    <span class="lw-day">${data.day}</span>
-                    <span class="lw-month-year">${data.month}<br>${data.year}</span>
+                    <span class="lw-day learnworlds-main-text learnworlds-main-text-large">${data.day}</span>
+                    <span class="lw-month-year learnworlds-main-text learnworlds-main-text-normal">${data.month}<br>${data.year}</span>
                 </div>
                 <div class="lw-body">
-                    <h3 class="lw-title">${data.title}</h3>
+                    <h3 class="learnworlds-heading3 learnworlds-heading3-normal">${data.title}</h3>
                 </div>
             </a>
         `,
@@ -32,10 +35,10 @@
         if (document.getElementById(styleId)) return;
 
         const css = `
-            :root {
-                --lw-dark: #222222;
-                --lw-accent: #F4E8E0;
-                --lw-radius: 24px;
+                        :root {
+                --black: #333333;
+				--soft-beige: #fdf3ef;
+                --radius: 24px;
             }
             .lw-event-wrapper {
                 display: flex;
@@ -45,54 +48,57 @@
             }
             
             .card-mini {
-                width: 300px;
-                height: 200px;
-                border-radius: var(--lw-radius);
-                overflow: hidden;
+                width: 33%;
+                height: auto;
+                border-radius: var(--radius);
+                overflow: show;
                 display: flex;
                 flex-direction: column;
                 position: relative;
                 cursor: pointer;
                 transition: all 0.3s ease;
-                border: 1px solid var(--lw-dark);
-                text-decoration: none;
+                border: 2px solid var(--black);
+                text-decoration: none !important;
                 color: inherit;
             }
             .card-mini .lw-badge {
                 position: absolute;
-                top: 0; left: 20px;
-                background: var(--lw-dark);
-                color: white;
+                top: -14px; left: 20px;
+                background: var(--black);
+                color: var(--soft-beige);
                 padding: 4px 12px;
-                border-radius: 0 0 10px 10px;
-                font-size: 11px;
-                text-transform: uppercase;
+                border-radius: var(--radius);
+                font-size: 14px;
                 z-index: 2;
             }
             .card-mini .lw-header {
-                background: var(--lw-accent);
-                color: var(--lw-dark);
+                color: var(--black);
                 flex: 1;
                 display: flex;
                 align-items: center;
-                padding: 0 25px;
                 transition: 0.3s;
+              padding: 24px 16px 16px;
+                border-radius: var(--radius) var(--radius) 0 0;
             }
             .card-mini .lw-body {
-                background: var(--lw-dark);
+                background: var(--black);
                 color: white;
-                padding: 15px 25px;
+                padding: 16px;
                 min-height: 85px;
                 display: flex;
-                align-items: center;
+                align-items: start;
                 transition: 0.3s;
+              text-align: left;
+                border-radius: 0 0 var(--radius) var(--radius);
             }
-            .card-mini .lw-day { font-size: 48px; font-weight: bold; margin-right: 12px; line-height: 1; }
-            .card-mini .lw-month-year { font-size: 16px; line-height: 1.1; text-transform: capitalize; }
-            .card-mini .lw-title { margin: 0; font-size: 16px; font-weight: 500; line-height: 1.3; }
+            .card-mini .lw-day { margin: 0 16px 0 0 }
+            .card-mini .lw-month-year { }
+            .card-mini .lw-title { 
+              font-weight: bold;
+			}
 
-            .card-mini:hover .lw-header { background: var(--lw-dark); color: white; }
-            .card-mini:hover .lw-body { background: var(--lw-accent); color: var(--lw-dark); }
+            .card-mini:hover .lw-header { background: var(--black); color: var(--soft-beige); }
+            .card-mini:hover .lw-body { background: transparent; color: var(--black); }
         `;
         const style = document.createElement('style');
         style.id = styleId;
