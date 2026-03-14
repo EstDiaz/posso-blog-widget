@@ -4,6 +4,8 @@
     // Usamos un proxy para evitar bloqueos de CORS (Cross-Origin Resource Sharing)
     const PROXY_URL = "https://api.allorigins.win/get?url=" + encodeURIComponent(RSS_URL);
 
+    console.log("> RSS Engine Running");
+
     try {
         const response = await fetch(PROXY_URL);
         const json = await response.json();
@@ -12,6 +14,8 @@
         const items = Array.from(xml.querySelectorAll("item"));
 
         const now = new Date();
+
+        console.log(items);
 
         // 1. FILTRADO
         const filtered = items.filter(item => {
