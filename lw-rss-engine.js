@@ -100,6 +100,7 @@
             .card-mini .lw-header {
                 color: var(--black);
                 display: flex;
+                text-decoration: none !important;
                 align-items: baseline;
                 padding: 32px 24px 16px;
                 min-height: 100px;
@@ -109,6 +110,7 @@
                 background: var(--black);
                 color: var(--blog-blue-bg);
                 padding: 24px;
+                text-align: left;
                 border-radius: 0 0 var(--radius-int) var(--radius-int);
             }
             .card-mini:hover .lw-header { background: var(--black); color: var(--blog-blue-bg); }
@@ -131,14 +133,21 @@
 				text-align: left;
             }
             .card-list .row-title-box {
-                background-color: var(--blog-blue);
+                background-color: var(--black);
                 flex: 0 0 35%;
                 position: relative;
                 text-decoration: none !important;
             }
+            .card-list:hover .row-title-box {
+                background-color: var(--blog-blue-dark);
+            }
             .card-list .row-info-box {
-                background-color: var(--blog-blue-bg);
+                background-color: var(--blog-blue);
                 flex: 0 0 40%;
+            }
+            .card-list:hover .row-info-box {
+                background-color: var(--black);
+                color: var(--blog-blue-bg);
             }
             .card-list .row-image-box {
                 flex: 0 0 25%;
@@ -174,10 +183,6 @@
             }
             .card-list .lw-date {
                 xfont-size: 1.2rem;
-            }
-            .card-list:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 10px 20px rgba(0,0,0,0.05);
             }
 
             /* RESPONSIVE card-list */
