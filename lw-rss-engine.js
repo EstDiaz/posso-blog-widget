@@ -5,7 +5,6 @@
     console.log("> RSS Engine Running");
     console.log("> Configuración detectada:", config);
 
-    // Detectamos si estamos en el mismo dominio para evitar el proxy
     const isSameOrigin = window.location.hostname === "mrmarcel.learnworlds.com";
 
     /**
@@ -26,6 +25,25 @@
                 </a>
             </div>
         `,
+        'card-list': (data) => `
+            <div class="col span_12_of_12 no-padding flex-item lw-card-mb">
+                <a href="${data.link}" class="lw-card card-list">
+                    <div class="row-section row-title-box">
+                        <span class="lw-badge learnworlds-overline-text">Así fue</span>
+                        <h3 class="learnworlds-heading3 lw-title">${data.title}</h3>
+                    </div>
+                    <div class="row-section row-info-box">
+                        <p class="learnworlds-main-text learnworlds-main-text-small lw-description">${data.description}</p>
+                        <div class="lw-date learnworlds-main-text learnworlds-main-text-normal">
+                            <strong>${data.day}</strong> ${data.month} ${data.year}
+                        </div>
+                    </div>
+                    <div class="row-section row-image-box" style="background-image: url('${data.image || 'https://via.placeholder.com/400x300'}')">
+                        <div class="js-learnworlds-overlay"></div>
+                    </div>
+                </a>
+            </div>
+        `,
         'debug': (data) => `<pre style="font-size:10px; color:white; background:black; padding:10px; overflow:auto;">${JSON.stringify(data, null, 2)}</pre>`
     };
 
@@ -39,35 +57,40 @@
         const css = `
             :root {
                 --black: #333333;
-				--soft-beige: #fdf3ef;
+                --blog-blue: #abc1e8;
+                --blog-blue-bg: #d4dff3;
                 --radius: 16px;
                 --radius-int: 14px;
             }
             
-            /* El contenedor usa el grid de LearnWorlds, solo añadimos gap si es necesario */
             .lw-event-wrapper.lw-cols {
                 margin-top: 20px;
             }
             
-            .card-mini {
-                width: 100%; /* El ancho lo controla el div .col superior */
-                height: 100%;
-                border-radius: var(--radius);
-                display: flex;
-                flex-direction: column;
-                position: relative;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                border: 2px solid var(--black);
+            /* ESTILOS COMUNES */
+            .lw-card {
                 text-decoration: none !important;
                 color: inherit;
+                transition: all 0.3s ease;
+                display: flex;
+                overflow: hidden;
+            }
+
+            /* PLANTILLA: CARD-MINI */
+            .card-mini {
+                width: 100%;
+                height: 100%;
+                border-radius: var(--radius);
+                flex-direction: column;
+                position: relative;
+                border: 2px solid var(--black);
                 background: transparent;
             }
             .card-mini .lw-badge {
                 position: absolute;
                 top: -14px; left: 20px;
                 background: var(--black);
-                color: var(--soft-beige);
+                color: var(--blog-blue-bg);
                 padding: 4px 12px;
                 border-radius: var(--radius);
                 font-size: 14px;
@@ -75,43 +98,91 @@
             }
             .card-mini .lw-header {
                 color: var(--black);
-                background: transparent;
                 display: flex;
                 align-items: baseline;
-                transition: 0.3s;
                 padding: 32px 24px 16px;
-                border-radius: var(--radius-int) var(--radius-int) 0 0;
                 min-height: 100px;
             }
             .card-mini .lw-body {
                 flex-grow: 1;
                 background: var(--black);
-                color: var(--soft-beige);
+                color: var(--blog-blue-bg);
                 padding: 24px;
-                display: flex;
-                align-items: start;
-                transition: 0.3s;
-                text-align: left;
                 border-radius: 0 0 var(--radius-int) var(--radius-int);
             }
-            .card-mini .lw-day { 
-				text-decoration: none !important;
-                margin: 0 16px 0 0;
-                line-height: 1;
-			}
-            .card-mini .lw-month-year {
-				text-decoration: none !important;
-                line-height: 1.2;
-            }
-            .card-mini .lw-title { 
-                font-weight: bold;
-                margin: 0;
-			}
-
-            .card-mini:hover .lw-header { background: var(--black); color: var(--soft-beige); }
+            .card-mini:hover .lw-header { background: var(--black); color: var(--blog-blue-bg); }
             .card-mini:hover .lw-body { background: transparent; color: var(--black); }
 
-            /* Ajuste para que las columnas tengan padding interno coherente con el grid */
+            /* PLANTILLA: card-list */
+            .card-list {
+                width: 100%;
+                min-height: 220px;
+                border: none;
+                flex-direction: row;
+            }
+            .card-list .row-section {
+                flex: 1;
+                padding: 30px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .card-list .row-title-box {
+                background-color: var(--blog-blue);
+                flex: 0 0 35%;
+                position: relative;
+            }
+            .card-list .row-info-box {
+                background-color: var(--blog-blue-bg);
+                flex: 0 0 40%;
+            }
+            .card-list .row-image-box {
+                flex: 0 0 25%;
+                background-size: cover;
+                background-position: center;
+                padding: 0;
+                position: relative;
+            }
+            /* Overlay de tintado */
+            .card-list .js-learnworlds-overlay {
+                position: absolute;
+                top: 0; left: 0; width: 100%; height: 100%;
+                background-color: var(--blog-blue);
+                mix-blend-mode: multiply;
+                pointer-events: none;
+            }
+            .card-list .lw-badge {
+                margin-bottom: 15px;
+                font-weight: bold;
+                opacity: 0.8;
+            }
+            .card-list .lw-title {
+                margin: 0;
+                line-height: 1.2;
+                font-weight: bold;
+            }
+            .card-list .lw-description {
+                margin-bottom: 20px;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            .card-list .lw-date {
+                font-size: 1.2rem;
+            }
+            .card-list:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            }
+
+            /* RESPONSIVE card-list */
+            @media (max-width: 991px) {
+                .card-list { flex-direction: column; }
+                .card-list .row-section { flex: none; width: 100%; }
+                .card-list .row-image-box { height: 200px; }
+            }
+
             .lw-event-wrapper .col {
                 padding: 10px !important;
                 display: flex;
@@ -155,14 +226,10 @@
             const pubDate = new Date(item.querySelector("pubDate").textContent);
             const matchCategory = categories.includes(config.category.toLowerCase());
 
-            // Lógica de exclusión por slug (data-remove) con limpieza de espacios
             const itemSlug = itemLink.split('/').filter(Boolean).pop();
             const slugToRemove = config.remove ? config.remove.trim() : null;
             
-            console.log(("> RSS Engine: Evaluando item con slug '" + itemSlug + "'" + (slugToRemove ? " contra slug a remover '" + slugToRemove + "'" : "")));
-            
             if (slugToRemove && itemSlug === slugToRemove) {
-                console.log(`> RSS Engine: Excluyendo post actual (${itemSlug})`);
                 return false;
             }
 
@@ -174,7 +241,6 @@
         const container = document.querySelector(config.container);
         if (!container) return;
         
-        // Aplicamos las clases nativas de grid de LearnWorlds al contenedor
         container.className = "lw-event-wrapper lw-cols multiple-rows multiple-rows-tl multiple-rows-tp multiple-rows-sl multiple-rows-sp align-items-stretch j-c-f-s";
         container.innerHTML = "";
 
@@ -184,7 +250,7 @@
             const itemData = {
                 title: item.querySelector("title").textContent,
                 link: item.querySelector("link").textContent,
-                description: item.querySelector("description").textContent.replace(/<[^>]*>?/gm, '').substring(0, 150),
+                description: item.querySelector("description").textContent.replace(/<[^>]*>?/gm, '').substring(0, 180),
                 day: dateObj.getDate(),
                 month: dateObj.toLocaleDateString('es-ES', { month: 'long' }),
                 year: dateObj.getFullYear(),
