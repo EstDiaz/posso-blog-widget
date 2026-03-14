@@ -154,6 +154,15 @@
             const pubDate = new Date(item.querySelector("pubDate").textContent);
             const matchCategory = categories.includes(config.category.toLowerCase());
 
+            // Lógica de exclusión por slug (data-remove) con limpieza de espacios
+            const itemSlug = itemLink.split('/').filter(Boolean).pop();
+            const slugToRemove = config.remove ? config.remove.trim() : null;
+            
+            if (slugToRemove && itemSlug === slugToRemove) {
+                console.log(`> RSS Engine: Excluyendo post actual (${itemSlug})`);
+                return false;
+            }
+            
             if (config.filter === 'future') return matchCategory && pubDate >= new Date();
             if (config.filter === 'past') return matchCategory && pubDate < new Date();
             return matchCategory;
