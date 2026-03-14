@@ -61,7 +61,7 @@
                 border: 2px solid var(--black);
                 text-decoration: none !important;
                 color: inherit;
-                background: var(--soft-beige);
+                background: transparent;
             }
             .card-mini .lw-badge {
                 position: absolute;
@@ -75,6 +75,7 @@
             }
             .card-mini .lw-header {
                 color: var(--black);
+                background: transparent;
                 display: flex;
                 align-items: baseline;
                 transition: 0.3s;
@@ -162,7 +163,7 @@
         if (!container) return;
         
         // Aplicamos las clases nativas de grid de LearnWorlds al contenedor
-        container.className = "lw-event-wrapper lw-cols multiple-rows multiple-rows-tl multiple-rows-tp multiple-rows-sl multiple-rows-sp align-items-stretch j-c-c";
+        container.className = "lw-event-wrapper lw-cols multiple-rows multiple-rows-tl multiple-rows-tp multiple-rows-sl multiple-rows-sp align-items-stretch j-c-f-s";
         container.innerHTML = "";
 
         filtered.slice(0, parseInt(config.limit) || 3).forEach(item => {
