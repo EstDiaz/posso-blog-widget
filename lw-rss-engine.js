@@ -74,7 +74,6 @@
                 color: inherit;
                 transition: all 0.3s ease;
                 display: flex;
-                overflow: hidden;
             }
 
             /* PLANTILLA: CARD-MINI */
@@ -105,6 +104,10 @@
                 padding: 32px 24px 16px;
                 min-height: 100px;
             }
+            .card-mini .lw-header .lw-day,
+            .card-mini .lw-header .lw-month-year {
+                text-decoration: none !important;
+            }
             .card-mini .lw-body {
                 flex-grow: 1;
                 background: var(--black);
@@ -123,6 +126,7 @@
                 border: 2px solid var(--black);
                 border-radius: var(--radius);
                 flex-direction: row;
+                cursor: pointer;
             }
             .card-list .row-section {
                 flex: 1;
@@ -137,6 +141,7 @@
                 flex: 0 0 35%;
                 position: relative;
                 text-decoration: none !important;
+                color: var(--blog-blue-bg) !important;
             }
             .card-list:hover .row-title-box {
                 background-color: var(--blog-blue-dark);
