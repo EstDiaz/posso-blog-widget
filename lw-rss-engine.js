@@ -20,7 +20,7 @@
                     <span class="lw-month-year learnworlds-main-text learnworlds-main-text-large">${data.month} ${data.year}</span>
                 </div>
                 <div class="lw-body">
-                    <h3 class="learnworlds-heading3 learnworlds-heading3-normal">${data.title}</h3>
+                    <h3 class="learnworlds-heading3 learnworlds-heading3-small">${data.title}</h3>
                 </div>
             </a>
         `,
@@ -38,7 +38,8 @@
             :root {
                 --black: #333333;
 				--soft-beige: #fdf3ef;
-                --radius: 24px;
+                --radius: 16px;
+                --radius-int: 14px;
             }
             .lw-event-wrapper {
                 display: flex;
@@ -78,18 +79,19 @@
                 align-items: baseline;
                 transition: 0.3s;
                 padding: 24px 24px 8px;
-                border-radius: var(--radius) var(--radius) 0 0;
+                border-radius: var(--radius-int) var(--radius-int) 0 0;
             }
             .card-mini .lw-body {
+                flex-grow: 1;
                 background: var(--black);
-                color: white;
+                color: var(--soft-beige);
                 padding: 24px;
                 min-height: 85px;
                 display: flex;
                 align-items: start;
                 transition: 0.3s;
                 text-align: left;
-                border-radius: 0 0 var(--radius) var(--radius);
+                border-radius: 0 0 var(--radius-int) var(--radius-int);
             }
             .card-mini .lw-day { 
 				text-decoration: none !important;
