@@ -1,13 +1,13 @@
-(async function() {
+(async function () {
     const config = document.currentScript.dataset;
     const RSS_URL = "https://mrmarcel.learnworlds.com/rss.xml";
 
     console.log("> RSS Engine Running");
     console.log("> Configuración detectada:", config);
-    
+
     // Detectamos si estamos en el mismo dominio para evitar el proxy
     const isSameOrigin = window.location.hostname === "mrmarcel.learnworlds.com";
-    
+
     /**
      * REPOSITORIO DE PLANTILLAS
      */
@@ -16,8 +16,8 @@
             <a href="${data.link}" class="lw-card card-mini">
                 <div class="lw-badge learnworlds-overline-text">Actividad</div>
                 <div class="lw-header">
-                    <span class="lw-day learnworlds-main-text learnworlds-main-text-large">${data.day}</span>
-                    <span class="lw-month-year learnworlds-main-text learnworlds-main-text-normal">${data.month}<br>${data.year}</span>
+                    <span class="lw-day learnworlds-main-text learnworlds-main-text-huge">${data.day}</span>
+                    <span class="lw-month-year learnworlds-main-text learnworlds-main-text-large">${data.month} ${data.year}</span>
                 </div>
                 <div class="lw-body">
                     <h3 class="learnworlds-heading3 learnworlds-heading3-normal">${data.title}</h3>
@@ -35,7 +35,7 @@
         if (document.getElementById(styleId)) return;
 
         const css = `
-                        :root {
+            :root {
                 --black: #333333;
 				--soft-beige: #fdf3ef;
                 --radius: 24px;
@@ -75,26 +75,31 @@
                 color: var(--black);
                 flex: 1;
                 display: flex;
-                align-items: center;
+                align-items: baseline;
                 transition: 0.3s;
-              padding: 24px 16px 16px;
+                padding: 24px 24px 8px;
                 border-radius: var(--radius) var(--radius) 0 0;
             }
             .card-mini .lw-body {
                 background: var(--black);
                 color: white;
-                padding: 16px;
+                padding: 24px;
                 min-height: 85px;
                 display: flex;
                 align-items: start;
                 transition: 0.3s;
-              text-align: left;
+                text-align: left;
                 border-radius: 0 0 var(--radius) var(--radius);
             }
-            .card-mini .lw-day { margin: 0 16px 0 0 }
-            .card-mini .lw-month-year { }
+            .card-mini .lw-day { 
+				text-decoration: none !important;
+                margin: 0 16px 0 0
+			}
+            .card-mini .lw-month-year {
+				text-decoration: none !important;
+            }
             .card-mini .lw-title { 
-              font-weight: bold;
+                font-weight: bold;
 			}
 
             .card-mini:hover .lw-header { background: var(--black); color: var(--soft-beige); }
@@ -138,7 +143,7 @@
             const categories = Array.from(item.querySelectorAll("category")).map(c => c.textContent.toLowerCase());
             const pubDate = new Date(item.querySelector("pubDate").textContent);
             const matchCategory = categories.includes(config.category.toLowerCase());
-            
+
             if (config.filter === 'future') return matchCategory && pubDate >= new Date();
             if (config.filter === 'past') return matchCategory && pubDate < new Date();
             return matchCategory;
@@ -153,7 +158,7 @@
 
         filtered.slice(0, parseInt(config.limit) || 3).forEach(item => {
             const dateObj = new Date(item.querySelector("pubDate").textContent);
-            
+
             const itemData = {
                 title: item.querySelector("title").textContent,
                 link: item.querySelector("link").textContent,
