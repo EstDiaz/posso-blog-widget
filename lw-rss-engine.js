@@ -111,6 +111,7 @@
                 align-items: baseline;
                 padding: 32px 24px 16px;
                 min-height: 100px;
+                border-radius:var(--radius-int) var(--radius-int) 0 0;
             }
             .card-mini .lw-header .lw-day,
             .card-mini .lw-header .lw-month-year {
