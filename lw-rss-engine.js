@@ -36,7 +36,7 @@
                         <p class="learnworlds-main-text learnworlds-main-text-normal lw-description">${data.description}</p>
                         <div class="lw-date">
                             <span class="lw-day learnworlds-main-text learnworlds-main-text-huge">${data.day}</span> 
-                            <span class="lw-month-year learnworlds-main-text learnworlds-main-text-normal">${data.month} ${data.year}</span>
+                            <span class="lw-month-year learnworlds-main-text learnworlds-main-text-normal bold">${data.month} ${data.year}</span>
                         </div>
                     </div>
                     <div class="row-section row-image-box" style="background-image: url('${data.image || 'https://via.placeholder.com/400x300'}')">
@@ -78,6 +78,7 @@
             }
             .lw-day {
                 text-decoration: none !important;
+                margin-right: 8px;
             }
             .lw-month-year {
                 text-decoration: none !important;
@@ -139,7 +140,7 @@
             }
             .card-list .row-section {
                 flex: 1;
-                padding: 32px 24px;
+                padding: 24px;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between; /* Elementos a los extremos */
@@ -148,15 +149,15 @@
             }
             .card-list .row-title-box {
                 background-color: var(--black);
-                var(--radius-int) 0 0 var(--radius-int);
+                border-radius: var(--radius-int) 0 0 var(--radius-int);
                 flex: 0 0 35%;
                 position: relative;
                 text-decoration: none !important;
                 color: var(--blog-blue-bg) !important;
-                border-right: 2px solid var(--black);
             }
             .card-list:hover .row-title-box {
-                background-color: var(--blog-blue-dark);
+                background-color: var(--blog-blue);
+                color: var(--black) !important;
             }
             .card-list .row-info-box {
                 background-color: var(--blog-blue);
