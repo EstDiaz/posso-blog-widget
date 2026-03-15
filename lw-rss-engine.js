@@ -150,6 +150,9 @@
                 border-radius: var(--radius);
                 flex-direction: row;
             }
+            .card-list * {
+                transition: all 0.3s ease;
+            }
             .card-list:hover {
                 cursor: pointer;
             }
@@ -188,6 +191,7 @@
                 background-position: center;
                 padding: 0;
                 position: relative;
+                border-radius: 0 var(--radius-int) var(--radius-int) 0;
             }
             .card-list .js-learnworlds-overlay {
                 position: absolute;
@@ -196,8 +200,12 @@
                 mix-blend-mode: multiply;
                 pointer-events: none;
             }
+            .card-list:hover .js-learnworlds-overlay {
+                opacity: 0.2;
+            }
             .card-list .lw-badge, .card-list .lw-title, .card-list .lw-description, .card-list .lw-date {
                 margin: 0;
+                text-decoration: none !important;
             }
 
             @media (max-width: 991px) {
