@@ -65,30 +65,6 @@
                 </a>
             </div>
         `,
-        'card-blue-OLD': (data) => `
-            <div class="col lw-b-1px-fadeout80 span_4_of_12 span_4_of_12-tl span_4_of_12-tp span_6_of_12-sl span_12_of_12-sp mb-2rem no-padding flex-item learnworlds-align-left lw-body-bg lw-blog-card js-blog-card">
-                <a href="${data.link}" class="lw-blog-card-txt text-dec-none card-blue">
-                    <div class="learnworlds-image pos-rel learnworlds-bg-default stretched-bg learnworlds-framed-image learnworlds-element no-margin-bottom rectangle learnworlds-frame-size-full" style="background-image: url('${data.image || 'https://via.placeholder.com/400x300'}');">
-                        <div class="lw-tags absolute tl">
-                            ${data.categories.map(cat => `
-                                <div class="lw-tag lw-brand-bg learnworlds-main-text learnworlds-element learnworlds-main-text-tiny tt-none">${cat}</div>
-                            `).join('')}
-                        </div>
-                    </div>
-                    <div class="lw-padding-small learnworlds-element">
-                        <div class="learnworlds-overline-text learnworlds-element">
-                            por <span>${data.author || 'Equipo POSSO'}</span> | ${data.day} ${data.month}, ${data.year}
-                        </div>
-                        <h3 class="learnworlds-heading3 learnworlds-heading3-small learnworlds-element">
-                            ${data.title}
-                        </h3>
-                        <div class="lw-blog-card-descr learnworlds-main-text learnworlds-element learnworlds-main-text-very-small">
-                            ${data.description}
-                        </div>
-                    </div>
-                </a>
-            </div>
-        `,
         'card-blue': (data) => `
             <div class="col lw-b-1px-fadeout80 span_4_of_12 span_4_of_12-tl span_4_of_12-tp span_6_of_12-sl span_12_of_12-sp mb-2rem no-padding flex-item learnworlds-align-left lw-body-bg lw-blog-card js-blog-card">
                 <a href="${data.link}" class="lw-blog-card-txt text-dec-none card-blue">
@@ -132,9 +108,7 @@
                 --radius-int: 14px;
             }
             
-            .lw-event-wrapper.lw-cols { margin-top: 20px; }
-            
-            .lw-card { text-decoration: none !important; color: inherit; transition: all 0.3s ease; display: flex; }
+            .lw-card { text-decoration: none !important; color: inherit; transition: all 0.25s ease; display: flex; }
             .lw-day, .lw-month-year { text-decoration: none !important; }
 
             /* CARD-MINI */
@@ -156,17 +130,41 @@
             .card-list .js-learnworlds-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--blog-blue); mix-blend-mode: multiply; pointer-events: none; }
 
             /* CARD-BLUE SPECIFICS */
-            x.lw-blog-card .lw-tags { padding: 10px; display: flex; gap: 5px; flex-wrap: wrap; }
-            x.lw-blog-card .lw-tag { padding: 2px 8px; border-radius: 4px; color: white; background: var(--black); }
-            x.lw-blog-card-txt { display: block; height: 100%; }
-            x.lw-blog-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+            .card-blue {
+	            padding: 16px;
+            }
+            .lw-blog-card .card-blue .lw-tags { 
+                display: flex; 
+                gap: 8px; 
+                justify-content: flex-end; 
+                flex-wrap: wrap; 
+            }
+            .lw-blog-card .card-blue .lw-tag { 
+                border-radius: 9999px;
+                padding: 8px 14px;
+                white-space: nowrap;
+                line-height: 1;
+                background: var(--black);
+                color: var(--white);
+            }
+            .lw-blog-card:hover .card-blue .lw-tag { 
+                background: var(--blog-blue);
+                color: var(--black);
+            }
+            .lw-blog-card .card-blue .learnworlds-image {
+                width: calc(100% - 64px);
+                margin: 8px auto;
+            }
+            .lw-blog-card .card-blue .learnworlds-image + .lw-padding-small {
+                padding: 4px;
+            }
 
             @media (max-width: 991px) {
                 .card-list { flex-direction: column; }
                 .card-list .row-section { flex: none; width: 100%; border-bottom: 2px solid var(--black); }
                 .card-list .row-image-box { height: 200px; }
             }
-            .lw-event-wrapper .col { padding: 10px !important; display: flex; }
+            .lw-event-wrapper .col { display: flex; }
         `;
         const style = document.createElement('style');
         style.id = styleId;
