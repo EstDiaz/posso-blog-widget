@@ -34,8 +34,8 @@
                     </div>
                     <div class="row-section row-info-box">
                         <p class="learnworlds-main-text learnworlds-main-text-normal lw-description">${data.description}</p>
-                        <div class="lw-date learnworlds-main-text learnworlds-main-text-very-large">
-                            <span class="lw-day learnworlds-main-text learnworlds-main-text-very-large">${data.day}</span> 
+                        <div class="lw-date">
+                            <span class="lw-day learnworlds-main-text learnworlds-main-text-huge">${data.day}</span> 
                             <span class="lw-month-year learnworlds-main-text learnworlds-main-text-normal">${data.month} ${data.year}</span>
                         </div>
                     </div>
@@ -75,6 +75,12 @@
                 color: inherit;
                 transition: all 0.3s ease;
                 display: flex;
+            }
+            .lw-day {
+                text-decoration: none !important;
+            }
+            .lw-month-year {
+                text-decoration: none !important;
             }
 
             /* PLANTILLA: CARD-MINI */
@@ -155,7 +161,6 @@
             .card-list .row-info-box {
                 background-color: var(--blog-blue);
                 flex: 0 0 40%;
-                border-right: 2px solid var(--black);
             }
             .card-list:hover .row-info-box {
                 background-color: var(--black);
