@@ -8,6 +8,24 @@
     const isSameOrigin = window.location.hostname === "mrmarcel.learnworlds.com";
 
     /**
+     * FUNCIÓN PARA RECUPERAR IMAGEN DE METADATOS (og:image)
+     */
+    const fetchMetaImage = async (url) => {
+        try {
+            const targetUrl = isSameOrigin ? url : "https://corsproxy.io/?" + encodeURIComponent(url);
+            const response = await fetch(targetUrl);
+            const htmlText = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, "text/html");
+            const ogImage = doc.querySelector('meta[property="og:image"]');
+            return ogImage ? ogImage.getAttribute('content') : null;
+        } catch (e) {
+            console.warn(`> RSS Engine: No se pudo recuperar imagen meta para ${url}`);
+            return null;
+        }
+    };
+
+    /**
      * REPOSITORIO DE PLANTILLAS
      */
     const templates = {
@@ -39,7 +57,7 @@
                             <span class="lw-month-year learnworlds-main-text learnworlds-main-text-normal bold">${data.month} ${data.year}</span>
                         </div>
                     </div>
-                    <div class="row-section row-image-box" style="background-image: url('${data.image || 'https://via.placeholder.com/400x300'}')">
+                    <div class="row-section row-image-box" style="background-image: url('${data.image || 'https://via.placeholder.com/400x300?text=MrMarcel'}')">
                         <div class="js-learnworlds-overlay"></div>
                     </div>
                 </a>
@@ -113,10 +131,6 @@
                 min-height: 100px;
                 border-radius:var(--radius-int) var(--radius-int) 0 0;
             }
-            .card-mini .lw-header .lw-day,
-            .card-mini .lw-header .lw-month-year {
-                text-decoration: none !important;
-            }
             .card-mini .lw-body {
                 flex-grow: 1;
                 background: var(--black);
@@ -144,8 +158,8 @@
                 padding: 24px;
                 display: flex;
                 flex-direction: column;
-                justify-content: space-between; /* Elementos a los extremos */
-                gap: 32px; /* Espacio mínimo garantizado */
+                justify-content: space-between;
+                gap: 32px;
 				text-align: left;
             }
             .card-list .row-title-box {
@@ -175,7 +189,6 @@
                 padding: 0;
                 position: relative;
             }
-            /* Overlay de tintado */
             .card-list .js-learnworlds-overlay {
                 position: absolute;
                 top: 0; left: 0; width: 100%; height: 100%;
@@ -183,28 +196,10 @@
                 mix-blend-mode: multiply;
                 pointer-events: none;
             }
-            .card-list .lw-badge {
-                margin: 0;
-                font-weight: normal;
-                text-decoration: none !important;
-            }
-            .card-list .lw-title {
-                margin: 0;
-                line-height: 1.2;
-                font-weight: normal;
-            }
-            .card-list .lw-description {
-                margin: 0;
-                display: -webkit-box;
-                -webkit-line-clamp: 3;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
-            .card-list .lw-date {
+            .card-list .lw-badge, .card-list .lw-title, .card-list .lw-description, .card-list .lw-date {
                 margin: 0;
             }
 
-            /* RESPONSIVE card-list */
             @media (max-width: 991px) {
                 .card-list { flex-direction: column; }
                 .card-list .row-section { flex: none; width: 100%; border-right: none; border-bottom: 2px solid var(--black); }
@@ -266,26 +261,36 @@
             return matchCategory;
         });
 
+        // Generar itemData base
+        const processedItems = filtered.slice(0, parseInt(config.limit) || 3).map(item => {
+            const dateObj = new Date(item.querySelector("pubDate").textContent);
+            const descHtml = item.querySelector("description").textContent;
+            return {
+                title: item.querySelector("title").textContent,
+                link: item.querySelector("link").textContent,
+                description: descHtml.replace(/<[^>]*>?/gm, '').substring(0, 180),
+                day: dateObj.getDate(),
+                month: dateObj.toLocaleDateString('es-ES', { month: 'long' }),
+                year: dateObj.getFullYear(),
+                image: (descHtml.match(/src="([^"]+)"/) || [])[1] || null
+            };
+        });
+
+        // Recuperar imágenes faltantes de los metadatos de la página
+        await Promise.all(processedItems.map(async (data) => {
+            if (!data.image) {
+                console.log(`> RSS Engine: Buscando imagen meta para ${data.title}...`);
+                data.image = await fetchMetaImage(data.link);
+            }
+        }));
+
         const container = document.querySelector(config.container);
         if (!container) return;
         
         container.className = "lw-event-wrapper lw-cols multiple-rows multiple-rows-tl multiple-rows-tp multiple-rows-sl multiple-rows-sp align-items-stretch j-c-f-s";
         container.innerHTML = "";
 
-        filtered.slice(0, parseInt(config.limit) || 3).forEach(item => {
-            const dateObj = new Date(item.querySelector("pubDate").textContent);
-
-            const itemData = {
-                title: item.querySelector("title").textContent,
-                link: item.querySelector("link").textContent,
-                description: item.querySelector("description").textContent.replace(/<[^>]*>?/gm, '').substring(0, 180),
-                day: dateObj.getDate(),
-                month: dateObj.toLocaleDateString('es-ES', { month: 'long' }),
-                year: dateObj.getFullYear(),
-                fullDate: dateObj.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' }),
-                image: (item.querySelector("description").textContent.match(/src="([^"]+)"/) || [])[1] || ""
-            };
-
+        processedItems.forEach(itemData => {
             const templateFn = templates[config.template] || templates['card-mini'];
             container.innerHTML += templateFn(itemData);
         });
