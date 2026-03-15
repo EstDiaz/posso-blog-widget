@@ -133,10 +133,10 @@
             .card-list .js-learnworlds-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--blog-blue); mix-blend-mode: multiply; pointer-events: none; }
 
             /* CARD-BLUE SPECIFICS */
-            .lw-blog-card .lw-tags { padding: 10px; display: flex; gap: 5px; flex-wrap: wrap; }
-            .lw-blog-card .lw-tag { padding: 2px 8px; border-radius: 4px; color: white; background: var(--black); }
-            .lw-blog-card-txt { display: block; height: 100%; }
-            .lw-blog-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+            x.lw-blog-card .lw-tags { padding: 10px; display: flex; gap: 5px; flex-wrap: wrap; }
+            x.lw-blog-card .lw-tag { padding: 2px 8px; border-radius: 4px; color: white; background: var(--black); }
+            x.lw-blog-card-txt { display: block; height: 100%; }
+            x.lw-blog-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 
             @media (max-width: 991px) {
                 .card-list { flex-direction: column; }
