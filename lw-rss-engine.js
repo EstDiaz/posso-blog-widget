@@ -67,7 +67,7 @@
         `,
         'card-blue': (data) => `
             <div class="col lw-b-1px-fadeout80 span_4_of_12 span_4_of_12-tl span_4_of_12-tp span_6_of_12-sl span_12_of_12-sp mb-2rem no-padding flex-item learnworlds-align-left lw-body-bg lw-blog-card js-blog-card">
-                <a href="${data.link}" class="lw-blog-card-txt text-dec-none">
+                <a href="${data.link}" class="lw-blog-card-txt text-dec-none card-blue">
                     <div class="learnworlds-image pos-rel learnworlds-bg-default stretched-bg learnworlds-framed-image learnworlds-element no-margin-bottom rectangle learnworlds-frame-size-full" style="background-image: url('${data.image || 'https://via.placeholder.com/400x300'}');">
                         <div class="lw-tags absolute tl">
                             ${data.categories.map(cat => `
