@@ -30,12 +30,13 @@
                 <a href="${data.link}" class="lw-card card-list">
                     <div class="row-section row-title-box">
                         <span class="lw-badge learnworlds-overline-text">Así fue</span>
-                        <h3 class="learnworlds-heading3 learnworlds-element learnworlds-heading3-normal lw-title">${data.title}</h3>
+                        <h3 class="learnworlds-heading3 learnworlds-element learnworlds-heading3-large lw-title">${data.title}</h3>
                     </div>
                     <div class="row-section row-info-box">
                         <p class="learnworlds-main-text learnworlds-main-text-normal lw-description">${data.description}</p>
-                        <div class="lw-date learnworlds-main-text learnworlds-main-text-large">
-                            <strong>${data.day}</strong> ${data.month} ${data.year}
+                        <div class="lw-date learnworlds-main-text learnworlds-main-text-very-large">
+                            <span class="lw-day learnworlds-main-text learnworlds-main-text-very-large">${data.day}</span> 
+                            <span class="lw-month-year learnworlds-main-text learnworlds-main-text-normal">${data.month} ${data.year}</span>
                         </div>
                     </div>
                     <div class="row-section row-image-box" style="background-image: url('${data.image || 'https://via.placeholder.com/400x300'}')">
@@ -126,6 +127,8 @@
                 border: 2px solid var(--black);
                 border-radius: var(--radius);
                 flex-direction: row;
+            }
+            .card-list:hover {
                 cursor: pointer;
             }
             .card-list .row-section {
@@ -139,6 +142,7 @@
             }
             .card-list .row-title-box {
                 background-color: var(--black);
+                var(--radius-int) 0 0 var(--radius-int);
                 flex: 0 0 35%;
                 position: relative;
                 text-decoration: none !important;
@@ -147,7 +151,6 @@
             }
             .card-list:hover .row-title-box {
                 background-color: var(--blog-blue-dark);
-                color: var(--black) !important;
             }
             .card-list .row-info-box {
                 background-color: var(--blog-blue);
