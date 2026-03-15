@@ -30,14 +30,13 @@
                 <a href="${data.link}" class="lw-card card-list">
                     <div class="row-section row-title-box">
                         <span class="lw-badge learnworlds-overline-text">Así fue</span>
-                        <h3 class="learnworlds-heading3 learnworlds-element learnworlds-heading3-normal lw-title lw-title">${data.title}</h3>
+                        <h3 class="learnworlds-heading3 learnworlds-element learnworlds-heading3-normal lw-title">${data.title}</h3>
                     </div>
                     <div class="row-section row-info-box">
-                        <div class="lw-date learnworlds-main-text learnworlds-main-text-large mb-20">
+                        <p class="learnworlds-main-text learnworlds-main-text-normal lw-description">${data.description}</p>
+                        <div class="lw-date learnworlds-main-text learnworlds-main-text-large">
                             <strong>${data.day}</strong> ${data.month} ${data.year}
                         </div>
-                        <p class="learnworlds-main-text learnworlds-main-text-normal lw-description">${data.description}</p>
-                        
                     </div>
                     <div class="row-section row-image-box" style="background-image: url('${data.image || 'https://via.placeholder.com/400x300'}')">
                         <div class="js-learnworlds-overlay"></div>
@@ -59,6 +58,7 @@
             :root {
                 --black: #333333;
                 --blog-blue: #abc1e8;
+                --blog-blue-dark: #6986B9;
                 --blog-blue-bg: #d4dff3;
                 --radius: 16px;
                 --radius-int: 14px;
@@ -130,10 +130,11 @@
             }
             .card-list .row-section {
                 flex: 1;
-                padding: 24px;
+                padding: 32px 24px;
                 display: flex;
                 flex-direction: column;
-                justify-content: start;
+                justify-content: space-between; /* Elementos a los extremos */
+                gap: 32px; /* Espacio mínimo garantizado */
 				text-align: left;
             }
             .card-list .row-title-box {
@@ -142,13 +143,16 @@
                 position: relative;
                 text-decoration: none !important;
                 color: var(--blog-blue-bg) !important;
+                border-right: 2px solid var(--black);
             }
             .card-list:hover .row-title-box {
                 background-color: var(--blog-blue-dark);
+                color: var(--black) !important;
             }
             .card-list .row-info-box {
                 background-color: var(--blog-blue);
                 flex: 0 0 40%;
+                border-right: 2px solid var(--black);
             }
             .card-list:hover .row-info-box {
                 background-color: var(--black);
@@ -170,7 +174,7 @@
                 pointer-events: none;
             }
             .card-list .lw-badge {
-                margin-bottom: 32px;
+                margin: 0;
                 font-weight: normal;
                 text-decoration: none !important;
             }
@@ -180,20 +184,20 @@
                 font-weight: normal;
             }
             .card-list .lw-description {
-                margin-bottom: 20px;
+                margin: 0;
                 display: -webkit-box;
                 -webkit-line-clamp: 3;
                 -webkit-box-orient: vertical;
                 overflow: hidden;
             }
             .card-list .lw-date {
-                xfont-size: 1.2rem;
+                margin: 0;
             }
 
             /* RESPONSIVE card-list */
             @media (max-width: 991px) {
                 .card-list { flex-direction: column; }
-                .card-list .row-section { flex: none; width: 100%; }
+                .card-list .row-section { flex: none; width: 100%; border-right: none; border-bottom: 2px solid var(--black); }
                 .card-list .row-image-box { height: 200px; }
             }
 
