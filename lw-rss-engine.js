@@ -105,15 +105,20 @@
                 --radius-int: 14px;
             }
             .lw-card { text-decoration: none !important; color: inherit; transition: all 0.25s ease; display: flex; }
-            .lw-day, .lw-month-year { text-decoration: none !important; }
+            .lw-day, .lw-month-year, .lw-badge { text-decoration: none !important; }
+            .lw-day { margin-right: 8px; }
 
             /* CARD-MINI */
             .card-mini { width: 100%; height: 100%; border-radius: var(--radius); flex-direction: column; position: relative; border: 2px solid var(--black); background: transparent; }
             .card-mini .lw-badge { position: absolute; top: -14px; left: 20px; background: var(--black); color: var(--blog-blue-bg); padding: 4px 12px; border-radius: var(--radius); font-size: 14px; z-index: 2; }
-            .card-mini .lw-header { color: var(--black); display: flex; align-items: baseline; padding: 32px 24px 16px; min-height: 100px; }
+            .card-mini .lw-header { border-radius: var(--radius-int) var(--radius-int) 0 0 ; color: var(--black); display: flex; align-items: baseline; padding: 32px 24px 16px; min-height: 100px; }
             .card-mini .lw-body { flex-grow: 1; background: var(--black); color: var(--blog-blue-bg); padding: 24px; text-align: left; border-radius: 0 0 var(--radius-int) var(--radius-int); }
             .card-mini:hover .lw-header { background: var(--black); color: var(--blog-blue-bg); }
-            .card-mini:hover .lw-body { background: transparent; color: var(--black); }
+            .card-mini:hover .lw-body { background: transparent; color: var(--black) !important; }
+            .beige-cards .card-mini .lw-badge,
+            .beige-cards .card-mini:hover .lw-header,
+            .beige-cards .card-mini .lw-body { 
+                color: var(--soft-beige)}
 
             /* CARD-LIST */
             .card-list { width: 100%; min-height: 220px; border: 2px solid var(--black); border-radius: var(--radius); flex-direction: row; }
@@ -135,8 +140,9 @@
 
             @media (max-width: 991px) {
                 .card-list { flex-direction: column; }
-                .card-list .row-section { flex: none; width: 100%; border-bottom: 2px solid var(--black); }
-                .card-list .row-image-box { height: 200px; }
+                .card-list .row-section { flex: none; width: 100%; }
+                .card-list .row-title-box { border-radius: var(--radius-int) var(--radius-int) 0 0; }
+                .card-list .row-image-box { height: 200px; border-radius: 0 0 var(--radius-int) var(--radius-int); }
             }
             .lw-event-wrapper .col { display: flex; }
         `;
