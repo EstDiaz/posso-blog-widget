@@ -136,7 +136,7 @@
             .lw-blog-card .card-blue .lw-tag { font-size: 12px; border-radius: 9999px; padding: 8px 16px; white-space: nowrap; line-height: 1; background: var(--black); color: var(--blog-blue-bg); }
             .lw-blog-card:hover .card-blue .lw-tag { background: var(--blog-blue); color: var(--black); }
             .lw-blog-card .card-blue .learnworlds-image { width: calc(100% - 32px); margin: 8px auto; border-radius: 8px; }
-            .dark-cards .lw-blog-card { background: var(--blog-blue-bg); }
+            .dark-cards .lw-blog-card { background: var(--blog-blue); }
 
             @media (max-width: 991px) {
                 .card-list { flex-direction: column; }
