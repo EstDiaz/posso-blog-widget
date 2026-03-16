@@ -127,10 +127,11 @@
 
             /* CARD-BLUE SPECIFICS */
             .card-blue { padding: 16px; }
-            .lw-blog-card .card-blue .lw-tags { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
-            .lw-blog-card .card-blue .lw-tag { border-radius: 9999px; padding: 4px 12px; white-space: nowrap; line-height: 1; background: var(--black); color: white; }
+            .lw-blog-card .card-blue .lw-tags { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; overflow: hidden; }
+            .lw-blog-card .card-blue .lw-tag { font-size: 12px; border-radius: 9999px; padding: 8px 16px; white-space: nowrap; line-height: 1; background: var(--black); color: var(--blog-blue-bg); }
             .lw-blog-card:hover .card-blue .lw-tag { background: var(--blog-blue); color: var(--black); }
             .lw-blog-card .card-blue .learnworlds-image { width: calc(100% - 32px); margin: 8px auto; border-radius: 8px; }
+            .dark-cards .lw-blog-card { background: var(--blog-blue-bg); }
 
             @media (max-width: 991px) {
                 .card-list { flex-direction: column; }
