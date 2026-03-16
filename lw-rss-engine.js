@@ -3,13 +3,11 @@
     const RSS_URL = "https://mrmarcel.learnworlds.com/rss.xml";
 
     console.log("> RSS Engine: Starting...");
-    console.log("> Config detected:", config);
-
+    
     const isSameOrigin = window.location.hostname === "mrmarcel.learnworlds.com";
 
     /**
      * FETCH IMAGE FROM METADATA (og:image)
-     * Used when the RSS feed doesn't provide a direct image URL.
      */
     const fetchMetaImage = async (url) => {
         try {
@@ -28,7 +26,6 @@
 
     /**
      * TEMPLATE REPOSITORY
-     * Logic for rendering different card styles.
      */
     const templates = {
         'card-mini': (data) => `
@@ -107,7 +104,6 @@
                 --radius: 16px;
                 --radius-int: 14px;
             }
-            
             .lw-card { text-decoration: none !important; color: inherit; transition: all 0.25s ease; display: flex; }
             .lw-day, .lw-month-year { text-decoration: none !important; }
 
@@ -130,34 +126,11 @@
             .card-list .js-learnworlds-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--blog-blue); mix-blend-mode: multiply; pointer-events: none; }
 
             /* CARD-BLUE SPECIFICS */
-            .card-blue {
-	            padding: 16px;
-            }
-            .lw-blog-card .card-blue .lw-tags { 
-                display: flex; 
-                gap: 8px; 
-                justify-content: flex-end; 
-                flex-wrap: wrap; 
-            }
-            .lw-blog-card .card-blue .lw-tag { 
-                border-radius: 9999px;
-                padding: 8px 14px;
-                white-space: nowrap;
-                line-height: 1;
-                background: var(--black);
-                color: var(--white);
-            }
-            .lw-blog-card:hover .card-blue .lw-tag { 
-                background: var(--blog-blue);
-                color: var(--black);
-            }
-            .lw-blog-card .card-blue .learnworlds-image {
-                width: calc(100% - 64px);
-                margin: 8px auto;
-            }
-            .lw-blog-card .card-blue .learnworlds-image + .lw-padding-small {
-                padding: 4px;
-            }
+            .card-blue { padding: 16px; }
+            .lw-blog-card .card-blue .lw-tags { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+            .lw-blog-card .card-blue .lw-tag { border-radius: 9999px; padding: 4px 12px; white-space: nowrap; line-height: 1; background: var(--black); color: white; }
+            .lw-blog-card:hover .card-blue .lw-tag { background: var(--blog-blue); color: var(--black); }
+            .lw-blog-card .card-blue .learnworlds-image { width: calc(100% - 32px); margin: 8px auto; border-radius: 8px; }
 
             @media (max-width: 991px) {
                 .card-list { flex-direction: column; }
@@ -176,16 +149,13 @@
      * MAIN FEED PROCESSING
      */
     try {
-        console.log("> RSS Engine: Initializing fetch...");
         injectStyles();
 
         let xmlText = "";
         if (isSameOrigin) {
-            console.log("> RSS Engine: Same-origin detected. Fetching directly.");
             const response = await fetch("/rss.xml");
             xmlText = await response.text();
         } else {
-            console.log("> RSS Engine: Cross-origin detected. Using proxy.");
             const PROXY_URL = "https://corsproxy.io/?" + encodeURIComponent(RSS_URL);
             const response = await fetch(PROXY_URL);
             xmlText = await response.text();
@@ -195,24 +165,43 @@
         const xml = parser.parseFromString(xmlText, "text/xml");
         const items = Array.from(xml.querySelectorAll("item"));
 
-        if (items.length === 0) throw new Error("No items found in the RSS feed.");
+        if (items.length === 0) throw new Error("No items found.");
 
-        // Filter items based on category, date, and exclusion slug
+        // PREPARE CATEGORY FILTERS
+        const rawCategoryParam = config.category || "";
+        const categoryList = rawCategoryParam.split(',').map(s => s.trim()).filter(Boolean);
+        const includeTags = categoryList.filter(s => !s.startsWith('-')).map(s => s.toLowerCase());
+        const excludeTags = categoryList.filter(s => s.startsWith('-')).map(s => s.substring(1).toLowerCase());
+
+        // FILTER ITEMS
         const filtered = items.filter(item => {
             const itemLink = item.querySelector("link").textContent;
-            const categories = Array.from(item.querySelectorAll("category")).map(c => c.textContent.toLowerCase());
+            const itemCategories = Array.from(item.querySelectorAll("category")).map(c => c.textContent.toLowerCase());
             const pubDate = new Date(item.querySelector("pubDate").textContent);
-            const matchCategory = categories.includes(config.category.toLowerCase());
             const itemSlug = itemLink.split('/').filter(Boolean).pop();
-            const slugToRemove = config.remove ? config.remove.trim() : null;
-            
-            if (slugToRemove && itemSlug === slugToRemove) return false;
-            if (config.filter === 'future') return matchCategory && pubDate >= new Date();
-            if (config.filter === 'past') return matchCategory && pubDate < new Date();
-            return matchCategory;
+
+            // 1. Check Exclusion Slug (data-remove)
+            if (config.remove && itemSlug === config.remove.trim()) return false;
+
+            // 2. Date Filter (Optional)
+            if (config.filter === 'future' && pubDate < new Date()) return false;
+            if (config.filter === 'past' && pubDate >= new Date()) return false;
+
+            // 3. Category Filter Logic
+            // Exclude if any excludeTag matches
+            const hasExcludedTag = excludeTags.some(tag => itemCategories.includes(tag));
+            if (hasExcludedTag) return false;
+
+            // Include if at least one includeTag matches (if provided)
+            if (includeTags.length > 0) {
+                const hasIncludedTag = includeTags.some(tag => itemCategories.includes(tag));
+                if (!hasIncludedTag) return false;
+            }
+
+            return true;
         });
 
-        // Normalize item data
+        // NORMALIZE DATA
         const processedItems = filtered.slice(0, parseInt(config.limit) || 3).map(item => {
             const dateObj = new Date(item.querySelector("pubDate").textContent);
             const descHtml = item.querySelector("description").textContent;
@@ -228,13 +217,15 @@
             };
         });
 
-        // Fetch missing images from page metadata
-        await Promise.all(processedItems.map(async (data) => {
-            if (!data.image) {
-                console.log(`> RSS Engine: Searching meta image for ${data.title}...`);
-                data.image = await fetchMetaImage(data.link);
-            }
-        }));
+        // FETCH IMAGES ONLY IF TEMPLATE NEEDS THEM
+        const needsImages = config.template !== 'card-mini';
+        if (needsImages) {
+            await Promise.all(processedItems.map(async (data) => {
+                if (!data.image) {
+                    data.image = await fetchMetaImage(data.link);
+                }
+            }));
+        }
 
         const container = document.querySelector(config.container);
         if (!container) return;
@@ -249,7 +240,5 @@
 
     } catch (error) {
         console.error("> RSS Engine Error:", error);
-        const container = document.querySelector(config.container);
-        if (container) container.innerHTML = "<!-- Error loading RSS items -->";
     }
 })();
