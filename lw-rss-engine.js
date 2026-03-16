@@ -153,9 +153,11 @@
 
         let xmlText = "";
         if (isSameOrigin) {
+            console.log("> RSS Engine: Same-origin detected. Fetching directly.");
             const response = await fetch("/rss.xml");
             xmlText = await response.text();
         } else {
+            console.log("> RSS Engine: Cross-origin detected. Using proxy.");
             const PROXY_URL = "https://corsproxy.io/?" + encodeURIComponent(RSS_URL);
             const response = await fetch(PROXY_URL);
             xmlText = await response.text();
@@ -188,11 +190,9 @@
             if (config.filter === 'past' && pubDate >= new Date()) return false;
 
             // 3. Category Filter Logic
-            // Exclude if any excludeTag matches
             const hasExcludedTag = excludeTags.some(tag => itemCategories.includes(tag));
             if (hasExcludedTag) return false;
 
-            // Include if at least one includeTag matches (if provided)
             if (includeTags.length > 0) {
                 const hasIncludedTag = includeTags.some(tag => itemCategories.includes(tag));
                 if (!hasIncludedTag) return false;
@@ -230,7 +230,19 @@
         const container = document.querySelector(config.container);
         if (!container) return;
         
-        container.className = "lw-event-wrapper lw-cols multiple-rows multiple-rows-tl multiple-rows-tp multiple-rows-sl multiple-rows-sp align-items-stretch j-c-f-s";
+        // Use classList.add to preserve existing classes instead of overwriting them
+        container.classList.add(
+            "lw-event-wrapper", 
+            "lw-cols", 
+            "multiple-rows", 
+            "multiple-rows-tl", 
+            "multiple-rows-tp", 
+            "multiple-rows-sl", 
+            "multiple-rows-sp", 
+            "align-items-stretch", 
+            "j-c-f-s"
+        );
+        
         container.innerHTML = "";
 
         processedItems.forEach(itemData => {
