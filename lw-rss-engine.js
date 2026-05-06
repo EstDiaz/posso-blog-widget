@@ -165,13 +165,32 @@
             .dark-cards .lw-blog-card { background: var(--blog-color); }
 
             /* CARD-DARK */
-            .card-dark { padding: 16px; }
+            
+            .lw-blog-card .card-dark { 
+                background: var(--ash-700);
+                color: var(--salmon-200);
+                padding: 16px;
+                border-radius: 16px;
+            }
+            .lw-blog-card:hover .card-dark { 
+                background: var(--salmon-200);
+                color: var(--ash-700) !important;
+            }
+            .lw-blog-card .card-dark .lw-tag { 
+                font-size: 12px; 
+                border-radius: 24px; 
+                padding: 8px 16px; 
+                white-space: nowrap; 
+                line-height: 1; 
+                background: var(--salmon-200); 
+                color: var(--ash-700); 
+            }
+            .lw-blog-card:hover .card-dark .lw-tag { 
+                background: var(--ash-700); 
+                color: var(--brand-color); 
+            }
             .lw-blog-card .card-dark .lw-tags { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; overflow: hidden; }
-            .lw-blog-card .card-dark .lw-tag { font-size: 12px; border-radius: 9999px; padding: 8px 16px; white-space: nowrap; line-height: 1; background: var(--brand-color); color: var(--dark); }
-            .lw-blog-card:hover .card-dark .lw-tag { background: var(--dark); color: var(--brand-color); }
             .lw-blog-card .card-dark .learnworlds-image { width: calc(100% - 32px); margin: 8px auto; border-radius: 8px; }
-            .dark-cards .lw-blog-card { background: var(--dark); color: var(--brand-color);}
-            .lw-blog-card:hover .dark-cards .lw-blog-card { background: var(--brand-color); color: var(--dark);}
 
             @media (max-width: 991px) {
                 .card-list { flex-direction: column; }
