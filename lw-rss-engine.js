@@ -62,9 +62,32 @@
                 </a>
             </div>
         `,
-        'card-blue': (data) => `
+        'card-color': (data) => `
             <div class="col lw-b-1px-fadeout80 span_4_of_12 span_4_of_12-tl span_4_of_12-tp span_6_of_12-sl span_12_of_12-sp mb-2rem no-padding flex-item learnworlds-align-left lw-body-bg lw-blog-card js-blog-card">
-                <a href="${data.link}" class="lw-blog-card-txt text-dec-none card-blue">
+                <a href="${data.link}" class="lw-blog-card-txt text-dec-none card-color">
+                    <div class="lw-tags">
+                        ${data.categories.map(cat => `
+                            <div class="lw-tag lw-brand-bg learnworlds-main-text learnworlds-element learnworlds-main-text-tiny tt-none">${cat}</div>
+                        `).join('')}
+                    </div>
+                    <div class="learnworlds-image pos-rel learnworlds-bg-default stretched-bg learnworlds-framed-image learnworlds-element no-margin-bottom rectangle learnworlds-frame-size-full" style="background-image: url('${data.image || 'https://via.placeholder.com/400x300'}');"></div>
+                    <div class="lw-padding-small learnworlds-element">
+                        <div class="learnworlds-overline-text learnworlds-element">
+                            por <span>${data.author || 'Equipo POSSO'}</span> | ${data.day} ${data.month}, ${data.year}
+                        </div>
+                        <h3 class="learnworlds-heading3 learnworlds-heading3-small learnworlds-element">
+                            ${data.title}
+                        </h3>
+                        <div class="lw-blog-card-descr learnworlds-main-text learnworlds-element learnworlds-main-text-very-small">
+                            ${data.description}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        `,
+        'card-dark': (data) => `
+            <div class="col lw-b-1px-fadeout80 span_4_of_12 span_4_of_12-tl span_4_of_12-tp span_6_of_12-sl span_12_of_12-sp mb-2rem no-padding flex-item learnworlds-align-left lw-body-bg lw-blog-card js-blog-card">
+                <a href="${data.link}" class="lw-blog-card-txt text-dec-none card-dark">
                     <div class="lw-tags">
                         ${data.categories.map(cat => `
                             <div class="lw-tag lw-brand-bg learnworlds-main-text learnworlds-element learnworlds-main-text-tiny tt-none">${cat}</div>
@@ -98,9 +121,12 @@
         const css = `
             :root {
                 --black: #333333;
-                --blog-blue: #abc1e8;
-                --blog-blue-dark: #6986B9;
-                --blog-blue-bg: #d4dff3;
+                --blog-color: #abc1e8;
+                --blog-color-dark: #6986B9;
+                --blog-color-bg: #d4dff3;
+                --brand-color: var(--salmon-200);
+                --brand-color-bg: var(--salmon-100);
+                --brand-color-dark: var(--salmon-300);
                 --radius: 16px;
                 --radius-int: 14px;
             }
@@ -110,10 +136,10 @@
 
             /* CARD-MINI */
             .card-mini { width: 100%; height: 100%; border-radius: var(--radius); flex-direction: column; position: relative; border: 2px solid var(--black); background: transparent; }
-            .card-mini .lw-badge { position: absolute; top: -14px; left: 20px; background: var(--black); color: var(--blog-blue-bg); padding: 4px 12px; border-radius: var(--radius); font-size: 14px; z-index: 2; }
+            .card-mini .lw-badge { position: absolute; top: -14px; left: 20px; background: var(--black); color: var(--blog-color-bg); padding: 4px 12px; border-radius: var(--radius); font-size: 14px; z-index: 2; }
             .card-mini .lw-header { border-radius: var(--radius-int) var(--radius-int) 0 0 ; color: var(--black); display: flex; align-items: baseline; padding: 32px 24px 16px; min-height: 100px; }
-            .card-mini .lw-body { flex-grow: 1; background: var(--black); color: var(--blog-blue-bg); padding: 24px; text-align: left; border-radius: 0 0 var(--radius-int) var(--radius-int); }
-            .card-mini:hover .lw-header { background: var(--black); color: var(--blog-blue-bg); }
+            .card-mini .lw-body { flex-grow: 1; background: var(--black); color: var(--blog-color-bg); padding: 24px; text-align: left; border-radius: 0 0 var(--radius-int) var(--radius-int); }
+            .card-mini:hover .lw-header { background: var(--black); color: var(--blog-color-bg); }
             .card-mini:hover .lw-body { background: transparent; color: var(--black) !important; }
             .beige-cards .card-mini .lw-badge,
             .beige-cards .card-mini:hover .lw-header,
@@ -123,20 +149,29 @@
             /* CARD-LIST */
             .card-list { width: 100%; min-height: 220px; border: 2px solid var(--black); border-radius: var(--radius); flex-direction: row; }
             .card-list .row-section { flex: 1; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 32px; text-align: left; }
-            .card-list .row-title-box { background-color: var(--black); border-radius: var(--radius-int) 0 0 var(--radius-int); flex: 0 0 35%; position: relative; color: var(--blog-blue-bg) !important; }
-            .card-list:hover .row-title-box { background-color: var(--blog-blue); color: var(--black) !important; }
-            .card-list .row-info-box { background-color: var(--blog-blue); flex: 0 0 40%; }
-            .card-list:hover .row-info-box { background-color: var(--black); color: var(--blog-blue-bg); }
+            .card-list .row-title-box { background-color: var(--black); border-radius: var(--radius-int) 0 0 var(--radius-int); flex: 0 0 35%; position: relative; color: var(--blog-color-bg) !important; }
+            .card-list:hover .row-title-box { background-color: var(--blog-color); color: var(--black) !important; }
+            .card-list .row-info-box { background-color: var(--blog-color); flex: 0 0 40%; }
+            .card-list:hover .row-info-box { background-color: var(--black); color: var(--blog-color-bg); }
             .card-list .row-image-box { flex: 0 0 25%; background-size: cover; background-position: center; position: relative; border-radius: 0 var(--radius-int) var(--radius-int) 0; }
-            .card-list .js-learnworlds-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--blog-blue); mix-blend-mode: multiply; pointer-events: none; }
+            .card-list .js-learnworlds-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--blog-color); mix-blend-mode: multiply; pointer-events: none; }
 
-            /* CARD-BLUE SPECIFICS */
-            .card-blue { padding: 16px; }
-            .lw-blog-card .card-blue .lw-tags { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; overflow: hidden; }
-            .lw-blog-card .card-blue .lw-tag { font-size: 12px; border-radius: 9999px; padding: 8px 16px; white-space: nowrap; line-height: 1; background: var(--black); color: var(--blog-blue-bg); }
-            .lw-blog-card:hover .card-blue .lw-tag { background: var(--blog-blue); color: var(--black); }
-            .lw-blog-card .card-blue .learnworlds-image { width: calc(100% - 32px); margin: 8px auto; border-radius: 8px; }
-            .dark-cards .lw-blog-card { background: var(--blog-blue); }
+            /* CARD-COLOR */
+            .card-color { padding: 16px; }
+            .lw-blog-card .card-color .lw-tags { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; overflow: hidden; }
+            .lw-blog-card .card-color .lw-tag { font-size: 12px; border-radius: 9999px; padding: 8px 16px; white-space: nowrap; line-height: 1; background: var(--black); color: var(--blog-color-bg); }
+            .lw-blog-card:hover .card-color .lw-tag { background: var(--blog-color); color: var(--black); }
+            .lw-blog-card .card-color .learnworlds-image { width: calc(100% - 32px); margin: 8px auto; border-radius: 8px; }
+            .dark-cards .lw-blog-card { background: var(--blog-color); }
+
+            /* CARD-DARK */
+            .card-dark { padding: 16px; }
+            .lw-blog-card .card-dark .lw-tags { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; overflow: hidden; }
+            .lw-blog-card .card-dark .lw-tag { font-size: 12px; border-radius: 9999px; padding: 8px 16px; white-space: nowrap; line-height: 1; background: var(--brand-color); color: var(--dark); }
+            .lw-blog-card:hover .card-dark .lw-tag { background: var(--dark); color: var(--brand-color); }
+            .lw-blog-card .card-dark .learnworlds-image { width: calc(100% - 32px); margin: 8px auto; border-radius: 8px; }
+            .dark-cards .lw-blog-card { background: var(--dark); color: var(--brand-color);}
+            .lw-blog-card:hover .dark-cards .lw-blog-card { background: var(--brand-color); color: var(--dark);}
 
             @media (max-width: 991px) {
                 .card-list { flex-direction: column; }
