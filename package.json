@@ -1,0 +1,12 @@
+{
+  "name": "posso-blog-widget",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "esbuild lw-rss-engine.js --bundle --outfile=dist/lw-rss-engine.js --platform=browser",
+    "watch": "esbuild lw-rss-engine.js --bundle --outfile=dist/lw-rss-engine.js --platform=browser --watch"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}
