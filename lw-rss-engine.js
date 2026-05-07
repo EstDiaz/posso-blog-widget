@@ -158,9 +158,10 @@
 
             /* CARD-COLOR */
             .card-color { padding: 16px; }
+            .lw-blog-card .card-color { color: var(--ash-700);  background: var(--salmon-150); }
+            .lw-blog-card:hover .card-color { background: var(--salmon-200); }
             .lw-blog-card .card-color .lw-tags { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; overflow: hidden; }
-            .lw-blog-card .card-color .lw-tag { font-size: 12px; border-radius: 9999px; padding: 8px 16px; white-space: nowrap; line-height: 1; background: var(--black); color: var(--blog-color-bg); }
-            .lw-blog-card:hover .card-color .lw-tag { background: var(--blog-color); color: var(--black); }
+            .lw-blog-card .card-color .lw-tag { font-size: 12px; border-radius: 9999px; padding: 8px 16px; white-space: nowrap; line-height: 1; background: var(--salmon-300); color: var(--salmon-150); }
             .lw-blog-card .card-color .learnworlds-image { width: calc(100% - 32px); margin: 8px auto; border-radius: 8px; }
             .dark-cards .lw-blog-card { background: var(--blog-color); }
 
