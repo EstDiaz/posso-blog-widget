@@ -1,0 +1,38 @@
+:root {
+    --black: #333333;
+    --blog-color: #abc1e8;
+    --blog-color-bg: #d4dff3;
+    --brand-color: var(--salmon-200);
+    --radius: 16px;
+    --radius-int: 14px;
+
+    --salmon-100: #FBE6DF;
+    --salmon-150: #F9D4C8;
+    --salmon-200: #F7C8B9;
+    --salmon-300: #F4B8A6;
+    --salmon-400: #DB8874;
+    --ash-700:  #2A2A2A;
+    --ash-900:  #212121;
+    --ash-1000: #171717;
+}
+
+.lw-card {
+    text-decoration: none !important;
+    color: inherit;
+    transition: all 0.25s ease;
+    display: flex;
+}
+
+.lw-day,
+.lw-month-year,
+.lw-badge {
+    text-decoration: none !important;
+}
+
+.lw-day {
+    margin-right: 8px;
+}
+
+.lw-event-wrapper .col {
+    display: flex;
+}

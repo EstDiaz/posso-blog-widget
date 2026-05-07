@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "esbuild lw-rss-engine.js --bundle --outfile=dist/lw-rss-engine.js --platform=browser",
-    "watch": "esbuild lw-rss-engine.js --bundle --outfile=dist/lw-rss-engine.js --platform=browser --watch"
+    "build": "esbuild lw-rss-engine.js --bundle --outfile=dist/lw-rss-engine.js --platform=browser --loader:.css=text",
+    "watch": "esbuild lw-rss-engine.js --bundle --outfile=dist/lw-rss-engine.js --platform=browser --loader:.css=text --watch"
   },
   "devDependencies": {
     "esbuild": "^0.25.0"
