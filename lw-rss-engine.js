@@ -1,6 +1,6 @@
 (async function () {
     const config = document.currentScript.dataset;
-    const RSS_URL = "https://mrmarcel.learnworlds.com/rss.xml";
+    const RSS_URL = "https://posso.learnworlds.com/rss.xml";
 
     console.log("> RSS Engine: Starting...");
     
