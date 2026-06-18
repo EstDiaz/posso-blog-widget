@@ -4,7 +4,7 @@
 
     console.log("> RSS Engine: Starting...");
     
-    const isSameOrigin = window.location.hostname === "mrmarcel.learnworlds.com";
+    const isSameOrigin = window.location.hostname === "posso.learnworlds.com";
 
     /**
      * FETCH IMAGE FROM METADATA (og:image)
