@@ -170,9 +170,10 @@
             
             .lw-blog-card .card-dark { 
                 background: var(--ash-700);
-                color: var(--salmon-200);
+                color: var(--salmon-200) !important;
                 padding: 16px;
                 border-radius: 16px;
+                transition: all 250ms ease-in;
             }
             .lw-blog-card:hover .card-dark { 
                 background: var(--salmon-200);
