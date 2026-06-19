@@ -131,6 +131,7 @@
                 --radius-int: 14px;
             }
             .lw-card { text-decoration: none !important; color: inherit; transition: all 0.25s ease; display: flex; }
+            .lw-card .lw-tag { font-family:"Poppins", sans-serif; font-weight: 500 }
             .lw-day, .lw-month-year, .lw-badge { text-decoration: none !important; }
             .lw-day { margin-right: 8px; }
 
