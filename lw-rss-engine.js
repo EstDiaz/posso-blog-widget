@@ -1,10 +1,10 @@
 (async function () {
     const config = document.currentScript.dataset;
-    const RSS_URL = "https://posso.learnworlds.com/rss.xml";
+    const RSS_URL = "https://posso.es/rss.xml";
 
     console.log("> RSS Engine: Starting...");
     
-    const isSameOrigin = window.location.hostname === "posso.learnworlds.com";
+    const isSameOrigin = window.location.hostname === "posso.es";
 
     /**
      * FETCH IMAGE FROM METADATA (og:image)
